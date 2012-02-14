@@ -1,7 +1,7 @@
 CPPFLAGS ?= -pedantic-errors -Wall
 CFLAGS   ?= -pipe -O2
 
-CPPFLAGS += -std=c99 -fPIC
+CPPFLAGS += -std=c99 -D_BSD_SOURCE -fPIC
 LDFLAGS  += -shared -ltokyocabinet
 
 bayes.so: bayes.c

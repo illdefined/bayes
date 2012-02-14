@@ -1,5 +1,9 @@
+#include <errno.h>
 #include <math.h>
 #include <stdint.h>
+#include <string.h>
+#include <wchar.h>
+#include <wctype.h>
 
 #include <defy/bool>
 #include <defy/expect>
@@ -32,7 +36,39 @@ bool bayes_feed(struct bayes *restrict bayes,
 	if (unlikely(!mdb))
 		goto leave;
 
-	/* TODO: Tokenise message */
+	size_t head = 0;
+	size_t tail = 0;
+
+	mbstate_t mbs;
+	memset(&mbs, 0, sizeof mbs);
+
+	while (tail < len) {
+		wchar_t wide;
+		size_t width
+			= mbrtowc(&wide, mesg + tail, len - tail, &mbs);
+		switch (width) {
+		case (size_t) -2:
+			bayes->err = "Incomplete multi byte character at end of input";
+			goto leave_mdb;
+		case (size_t) -1:
+			bayes->err = "Invalid multi byte character in input";
+			goto leave_mdb;
+		case 0:
+			width = 1;
+			break;
+		}
+
+		if (iswcntrl(wide)
+			|| iswspace(wide)) {
+			if (head < tail) {
+				/* TODO: Process token */
+			}
+
+			head = tail + width;
+		}
+
+		tail += width;
+	}
 
 leave_mdb:
 	tcmdbdel(mdb);

@@ -3,6 +3,7 @@
 
 #include <defy/bool>
 #include <defy/expect>
+#include <defy/nil>
 #include <defy/restrict>
 
 #include <tchdb.h>
@@ -15,10 +16,12 @@ struct item {
 };
 
 bool bayes_init(struct bayes *restrict bayes, char const *restrict dbpath, bool wrt) {
+	bayes->err = nil;
 	return tchdbopen(&bayes->hdb, dbpath, wrt ? HDBOWRITER | HDBOCREAT : HDBOREADER);
 }
 
 bool bayes_fini(struct bayes *restrict bayes) {
+	bayes->err = nil;
 	return tchdbclose(&bayes->hdb);
 }
 

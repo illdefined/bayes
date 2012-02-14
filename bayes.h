@@ -11,6 +11,7 @@
 
 struct bayes {
 	TCHDB hdb;
+	char const *err;
 };
 
 bool bayes_init(struct bayes *restrict, char const *restrict, bool);

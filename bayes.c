@@ -25,7 +25,8 @@ bool bayes_fini(struct bayes *restrict bayes) {
 	return tchdbclose(&bayes->hdb);
 }
 
-bool bayes_feed(char const *restrict mesg, ssize_t len, bool match) {
+bool bayes_feed(struct bayes *restrict bayes,
+	char const *restrict mesg, ssize_t len, bool match) {
 	bool ret = false;
 
 	TCMDB *mdb = tcmdbnew();
@@ -40,7 +41,8 @@ leave:
 	return ret;
 }
 
-double bayes_prob(char const *restrict mesg, ssize_t len) {
+double bayes_prob(struct bayes *restrict bayes,
+	char const *restrict mesg, ssize_t len) {
 	double ret = HUGE_VAL;
 	return ret;
 }

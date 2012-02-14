@@ -19,9 +19,11 @@ struct item {
 	uint64_t total;
 };
 
-bool bayes_init(struct bayes *restrict bayes, char const *restrict dbpath, bool wrt) {
+bool bayes_init(struct bayes *restrict bayes,
+	char const *restrict dbpath, bool wrt) {
 	bayes->err = nil;
-	return tchdbopen(&bayes->hdb, dbpath, wrt ? HDBOWRITER | HDBOCREAT : HDBOREADER);
+	return tchdbopen(&bayes->hdb, dbpath,
+		wrt ? HDBOWRITER | HDBOCREAT : HDBOREADER);
 }
 
 bool bayes_fini(struct bayes *restrict bayes) {
@@ -48,10 +50,12 @@ bool bayes_feed(struct bayes *restrict bayes,
 			= mbrtowc(&wide, mesg + tail, len - tail, &mbs);
 		switch (width) {
 		case (size_t) -2:
-			bayes->err = "Incomplete multi byte character at end of input";
+			bayes->err
+				= "Incomplete multi byte character at end of input";
 			goto leave_mdb;
 		case (size_t) -1:
-			bayes->err = "Invalid multi byte character in input";
+			bayes->err
+				= "Invalid multi byte character in input";
 			goto leave_mdb;
 		case 0:
 			width = 1;

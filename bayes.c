@@ -21,7 +21,6 @@ bool bayes_init(struct bayes *restrict bayes, char const *restrict dbpath, bool 
 }
 
 bool bayes_fini(struct bayes *restrict bayes) {
-	bayes->err = nil;
 	return tchdbclose(&bayes->hdb);
 }
 

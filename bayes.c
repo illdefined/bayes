@@ -107,7 +107,7 @@ bool bayes_feed(struct bayes *restrict bayes,
 	void const *token;
 
 	/* Insert tokens into the database */
-	while (token = tcmapiternext(map, &toklen)) {
+	while ((token = tcmapiternext(map, &toklen))) {
 		struct item item;
 
 		int ret = tchdbget3(&bayes->hdb, token, toklen, &item, sizeof item);
